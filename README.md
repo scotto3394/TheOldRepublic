@@ -8,8 +8,8 @@ Overall the intention of this project is to build a multiplayer RPG system, insp
 A very, very rough map involves:
 
 1. Building the core data structures and game systems, involving ways to build characters/NPCs/Enemies. As this solidifies, skill sets, combat mechanics, and whatever strikes our imagination should be incorporated as well.
-+ Since the goal is to eventually have an experience that can be shared amonst multiple players, building network communication and means of sharing data between players is essential. Choice of architecture is undecided at the moment.
-+ As we progress, there will no doubt be attempts to improve user experience from cleaner interfaces and a smoother game experience. This could include anything from windows to incorporating maps and movement. Lots of opportunities based on how we end up exploring and learning.
+2. Since the goal is to eventually have an experience that can be shared amonst multiple players, building network communication and means of sharing data between players is essential. Choice of architecture is undecided at the moment.
+3. As we progress, there will no doubt be attempts to improve user experience from cleaner interfaces and a smoother game experience. This could include anything from windows to incorporating maps and movement. Lots of opportunities based on how we end up exploring and learning.
 
 
 Help
