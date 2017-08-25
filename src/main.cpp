@@ -8,5 +8,7 @@ int main() {
 	std::getline(std::cin, womp_rat.name);
 
 	std::cout<< "You give " << womp_rat.name << " a nice big hug!\n";
+	std::cout<< "Press Enter to exit...";
+	std::cin.get();
 	return 0;
 }

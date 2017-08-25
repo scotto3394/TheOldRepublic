@@ -9,7 +9,7 @@ BUILDDIR := ./build
 TARGET := ./bin/main.exe
 LIBSRC := ./src/lib
 LIBBUILD := ./build/lib
-LIBTARGET := ./lib/libTOR.a
+#LIBTARGET := ./lib/libTOR.a
 
 SRCEXT := cpp
 SOURCES := $(wildcard $(SRCDIR)/*.$(SRCEXT))
@@ -31,7 +31,7 @@ $(TARGET): $(OBJECTS) $(LIBTARGET)
 	$(CC) $(CFLAGS) $^ $(LIB) -o $(TARGET)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) 
-	@echo "Building...";
+#	@echo "Building...";
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 #====================================================================

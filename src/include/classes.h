@@ -2,7 +2,6 @@
 #define CLASSES
 
 #include <iostream>
-#include <sstream>
 #include <math.h>
 #include <memory>
 #include <stdint.h>
@@ -17,12 +16,12 @@ struct coord {
 };
 
 struct stats {
-	int16_t str;
-	int16_t dex;
-	int16_t con;
-	int16_t wis;
-	int16_t inte;
-	int16_t cha;
+	int16_t str = 10;
+	int16_t dex = 10;
+	int16_t con = 10;
+	int16_t wis = 10;
+	int16_t inte = 10;
+	int16_t cha = 10;
 };
 
 //===========================================================
@@ -32,14 +31,22 @@ class entity {
 public:
 	entity();
 	~entity();
+	void setPos(float_t x, float_t y);
+	coord getPos();
+
+	coord position;
+	//coord direction (perhaps)
 protected:
 private:
 };
 
+//-----------------------------------------------------------
 class living: public entity {
 public:
 	living();
 	~living();
+	void setStats(stats stat_mod);
+	stats getStats();
 
 	std::string name;
 protected:
@@ -47,6 +54,7 @@ protected:
 private:
 };
 
+//-----------------------------------------------------------
 class npc: public living {
 public:
 	npc();
@@ -55,6 +63,7 @@ protected:
 private:
 };
 
+//-----------------------------------------------------------
 class player: public living {
 public:
 	player();
