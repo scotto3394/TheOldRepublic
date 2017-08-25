@@ -1,0 +1,6 @@
+[package]
+name = "TheOldRepublic"
+version = "0.1.0"
+authors = ["Scott Manifold <shm.qed@gmail.com>"]
+
+[dependencies]
