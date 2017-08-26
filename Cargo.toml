@@ -3,4 +3,12 @@ name = "TheOldRepublic"
 version = "0.1.0"
 authors = ["Scott Manifold <shm.qed@gmail.com>"]
 
+[lib]
+name = "httk"
+path = "src/lib.rs"
+
+[[bin]]
+name = "playground"
+path = "src/bin.rs"
+
 [dependencies]
