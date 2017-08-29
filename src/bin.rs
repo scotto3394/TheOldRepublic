@@ -2,9 +2,15 @@
 extern crate httk;
 
 //Inside Libraries
-use httk::network::tokio::proto_server;
+//use httk::network::tokio::proto_server;
+use httk::network::tokio_client::start_connection;
+
+//External Libraries
+use std::net::ToSocketAddrs;
 
 fn main() {
-	let address = "127.0.0.1:8080".parse().unwrap();
-	proto_server(address);
+
+	let address = "coruscant.smanifold.com:80";
+	// proto_server(address);
+	start_connection(address);
 }

@@ -92,7 +92,7 @@ impl Service for Echo {
 use std::net::SocketAddr;
 use tokio_proto::TcpServer;
 
-pub fn proto_server(addr: SocketAddr) {
+pub fn proto_server(addr: &str) {
 	let server = TcpServer::new(LineProto, addr);
 	
 	//We provide a way to *instantiate* the service for each new 

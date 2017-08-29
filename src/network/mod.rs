@@ -1,4 +1,5 @@
 pub mod tokio;
+pub mod tokio_client;
 
 use std::fs::File;
 use std::io::prelude::*;
