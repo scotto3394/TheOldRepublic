@@ -1,11 +1,15 @@
+pub mod tokio;
+
 use std::fs::File;
 use std::io::prelude::*;
+use std::net::TcpListener;
 use std::net::TcpStream;
 use std::thread;
 use std::sync::Arc;
 use std::sync::mpsc;
 use std::sync::Mutex;
 use std::time::Duration;
+
 
 //==========================================================
 // Structs
@@ -140,15 +144,33 @@ impl Drop for ThreadPool {
 // Functions
 //==========================================================
 
-pub fn start_connection() {
+pub fn start_connection(address: String, port: String) {
+	let url = format!("{}:{}", address, port);
 
+	let listener = TcpListener::bind(url).unwrap();
+	let pool = ThreadPool::new(4);
+	let mut counter = 0;
+
+	for stream in listener.incoming() {
+		if counter == 15 {
+			println!("Shutting down.");
+			break;
+		}
+
+		counter += 1;
+
+		let stream = stream.unwrap();
+
+		pool.execute(|| {
+			handle_connection(stream);
+		});
+	}
 }
 
-pub fn handle_connection(mut stream: TcpStream) {
+fn handle_connection(mut stream: TcpStream) {
 	/* Get request from connection*/
 	let mut buffer = [0; 512];
 	stream.read(&mut buffer).unwrap();
-	//println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
 
 	let get = b"GET / HTTP/1.1\r\n";
 	let sleep = b"GET /sleep HTTP/1.1\r\n";
