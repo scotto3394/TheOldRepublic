@@ -8,8 +8,12 @@ name = "httk"
 path = "src/lib.rs"
 
 [[bin]]
-name = "playground"
-path = "src/bin.rs"
+name = "client"
+path = "src/bin_client.rs"
+
+[[bin]]
+name = "server"
+path = "src/bin_server.rs"
 
 [dependencies]
 bytes = "0.4"

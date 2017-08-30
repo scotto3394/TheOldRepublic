@@ -1,4 +1,3 @@
-use std::net::SocketAddr;
 use std::net::TcpStream;
 use std::io::prelude::*;
 use std::io;
