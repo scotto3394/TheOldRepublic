@@ -5,7 +5,7 @@ use std::str;
 
 pub fn start_connection(addr: &str) {
 	let mut stream = TcpStream::connect(addr).unwrap();
-
+	stream.write("Quaggle, Quaggle, Quack".as_bytes());
 	loop{
 		let mut input_buffer = String::new();
 		io::stdin().read_line(&mut input_buffer).unwrap();

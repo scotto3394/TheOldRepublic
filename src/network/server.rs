@@ -1,4 +1,6 @@
-// codec building
+//===========================================================
+// Codec
+//===========================================================
 use std::io;
 use std::str;
 use bytes::BytesMut;
@@ -41,10 +43,13 @@ impl Encoder for LineCodec {
 	}
 }
 
-// protocol building
+//===========================================================
+// Protocol
+//===========================================================
 use tokio_proto::pipeline::ServerProto;
 use tokio_io::{AsyncRead, AsyncWrite};
 use tokio_io::codec::Framed;
+use futures::{Stream, Sink};
 
 pub struct LineProto;
 
@@ -57,14 +62,44 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for LineProto {
 
 	// Boilerplate
 	type Transport = Framed<T, LineCodec>;
-	type BindTransport = Result<Self::Transport, io::Error>;
+	type BindTransport = Box<Future<Item = Self::Transport, Error = io::Error>>;
 	fn bind_transport(&self, io: T) -> Self::BindTransport {
-		Ok(io.framed(LineCodec))
+		// The basic protocol (line-based)
+		let transport = io.framed(LineCodec);
+		
+		// Build the handshake protocol.
+		// Confirm they're a tauntaun or error out the connection.
+		Box::new(transport.into_future()
+			.map_err(|(e,_)| e)
+			.and_then(|(line,transport)| {
+				//Message received, verify credentials
+				match line {
+					Some(ref msg) if msg == "Quaggle, Quaggle, Quack" => {
+						println!("SERVER: received client handshake");
+						// Send acknowledgement
+						let ret = transport.send("Welcome to a world of pure imagination!".into());
+						Box::new(ret) as Self::BindTransport
+					}
+					_ => {
+						// An imposter has shown up!
+						// Error out the connection
+						println!("SERVER: An imposter appeared!");
+						let err = io::Error::new(io::ErrorKind::Other,
+									"invalid handshake");
+						let ret = future::err(err);
+						Box::new(ret) as Self::BindTransport
+
+					}
+				}
+			})
+		)
 	}
 
 }
 
-// Implement a service
+//===========================================================
+// Service
+//===========================================================
 use tokio_service::Service;
 use futures::{future, Future};
 
@@ -88,7 +123,9 @@ impl Service for Echo {
 	}
 }
 
-// Configure and run
+//===========================================================
+// Other
+//===========================================================
 use std::net::SocketAddr;
 use tokio_proto::TcpServer;
 
