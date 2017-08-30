@@ -1,8 +1,4 @@
 # TheOldRepublic
-Overall the intention of this project is to build a multiplayer RPG system, inspired by concepts from Star Wars: The Old Republic and Dungeons & Dragons. Mainly the goal of this project is to provide a fun side project to practice and build our coding skills, and possibly down the line as a fun game to play amonst ourselves. 
-
-A very, very rough map involves:
-=======
 Learning project with a Star Wars flair
 
 This particular branch uses the programming language [Rust](http://www.rust-lang.org/en-US/) which will be necessary to build and test these files. 
@@ -66,6 +62,7 @@ This will be the section for build instructions and other aspects such as runnin
 Building
 -------------------------------
 Within the Rust infastructure, it should be sufficient to run the following:
+
 	git clone "https://github.com/scotto3394/TheOldRepublic.git"
 	cd TheOldRepublic
 	cargo build --release
@@ -74,9 +71,6 @@ However at the moment, testing is limited and if there are problems feel free to
 
 Running
 -------------------------------
-
-For any current questions or comments, please contact Scott Manifold <shm.qed@gmail.com>. 
-=======
 
 Contact
 ===============================
