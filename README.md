@@ -1,9 +1,4 @@
 # TheOldRepublic
-<<<<<<< HEAD
-Learning project with a Star Wars flair.
-
-Overview
-=============================
 Overall the intention of this project is to build a multiplayer RPG system, inspired by concepts from Star Wars: The Old Republic and Dungeons & Dragons. Mainly the goal of this project is to provide a fun side project to practice and build our coding skills, and possibly down the line as a fun game to play amonst ourselves. 
 
 A very, very rough map involves:
@@ -17,14 +12,11 @@ Overview
 Overall the intention of this project is to build a multiplayer RPG system, inspired by concepts from Star Wars: The Old Republic and Dungeons & Dragons. Mainly the goal of this project is to provide a fun side project to practice and build our coding skills, and possibly down the line as a fun game to play amongst ourselves. 
 
 The basic goals come down to the following:
->>>>>>> rusty
 
 1. Building the core data structures and game systems, involving ways to build characters/NPCs/Enemies. As this solidifies, skill sets, combat mechanics, and whatever strikes our imagination should be incorporated as well.
 2. Since the goal is to eventually have an experience that can be shared amonst multiple players, building network communication and means of sharing data between players is essential. Choice of architecture is undecided at the moment.
 3. As we progress, there will no doubt be attempts to improve user experience from cleaner interfaces and a smoother game experience. This could include anything from windows to incorporating maps and movement. Lots of opportunities based on how we end up exploring and learning.
 
-<<<<<<< HEAD
-=======
 Code layout
 ===============================
 
@@ -66,7 +58,6 @@ Questions / Undetermined Components
 - Tracking temporary effects e.g. Statuses and Buffs
 - Level up system and Experience. Should this be automated like a computer game or manual like a pen and paper game.
 - Tracking "time" inside combat. Movement/Standard/Full round actions like Pathfinder, Actions Point concept like Divinity, or some other framework.
->>>>>>> rusty
 
 Help
 ===============================
@@ -74,26 +65,19 @@ This will be the section for build instructions and other aspects such as runnin
 
 Building
 -------------------------------
-<<<<<<< HEAD
-=======
 Within the Rust infastructure, it should be sufficient to run the following:
 	git clone "https://github.com/scotto3394/TheOldRepublic.git"
 	cd TheOldRepublic
 	cargo build --release
 
 However at the moment, testing is limited and if there are problems feel free to contact the authors (found below).
->>>>>>> rusty
 
 Running
 -------------------------------
 
-<<<<<<< HEAD
-Contact
-===============================
 For any current questions or comments, please contact Scott Manifold <shm.qed@gmail.com>. 
 =======
 
 Contact
 ===============================
 For any current questions or comments, please contact Scott Manifold <shm.qed@gmail.com>. 
->>>>>>> rusty
