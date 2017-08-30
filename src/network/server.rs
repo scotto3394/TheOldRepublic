@@ -51,7 +51,7 @@ use tokio_io::{AsyncRead, AsyncWrite};
 use tokio_io::codec::Framed;
 use futures::{Stream, Sink};
 
-pub struct LineProto;
+struct LineProto;
 
 impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for LineProto {
 	// For this protocol style, `Request` matches the `Item` type of the codec `Decoder`

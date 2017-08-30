@@ -17,3 +17,6 @@ pub fn start_connection(addr: &str) {
 		println!("Response was: {}", response.to_string());
 	}
 }
+
+
+struct ClientProto;
