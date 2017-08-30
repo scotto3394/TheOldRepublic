@@ -1,0 +1,20 @@
+[package]
+name = "TheOldRepublic"
+version = "0.1.0"
+authors = ["Scott Manifold <shm.qed@gmail.com>"]
+
+[lib]
+name = "httk"
+path = "src/lib.rs"
+
+[[bin]]
+name = "playground"
+path = "src/bin.rs"
+
+[dependencies]
+bytes = "0.4"
+futures = "0.1"
+tokio-io = "0.1"
+tokio-core = "0.1"
+tokio-proto = "0.1"
+tokio-service = "0.1"
