@@ -16,21 +16,7 @@ The basic goals come down to the following:
 Code layout
 ===============================
 
-Core
--------------------------------
-This will encompass what each player character (pc) and non-player character (npc) is capable of and the way data about them is represented/stored. 
-
-Combat
--------------------------------
-This module will incorporate many of the mathematics and dice rolls that come about in any adventure. Building upon the core module, this will take relevant character data and allow for smooth behind-the-scenes interaction with other characters. 
-
-Network
--------------------------------
-This module will attempt to build the basic behavior needed to communicate actions between players, and hence the multiplayer experience. 
-
-Binaries
--------------------------------
-There will be a separate "Client" and "Server" application to manage the discrepancy between players and GM.
+Information about the code layout can be found in the Docs. Link forthcoming.
 
 
 Current Layout and Progress
@@ -67,7 +53,7 @@ Within the Rust infastructure, it should be sufficient to run the following:
 	cd TheOldRepublic
 	cargo build --release
 
-However at the moment, testing is limited and if there are problems feel free to contact the authors (found below).
+However at the moment, testing is limited and if there are problems feel free to contact the authors (found below). This project draws upon the piston and tokio ecosystems, so the intial build will be much slower to contruct these dependencies.
 
 Running
 -------------------------------

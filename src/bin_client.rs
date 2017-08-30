@@ -1,9 +1,12 @@
+//! The source file for the `client` binary. Intended for players
+//! of the game, in conjunction with a GM run `server` binary.
+
 //extern crates
 extern crate httk;
 
 //Inside Libraries
-// use httk::network::client::start_connection;
-use httk::graphics::draw_rectangle;
+// use httk::holonet::client::start_connection;
+use httk::holoterminal::draw_rectangle;
 
 //External Libraries
 

@@ -1,8 +1,11 @@
+//! The source file for the `server` binary. Intended for the GM
+//! of the game, in conjunction with a player operated `client` binary.
+
 //extern crates
 extern crate httk;
 
 //Inside Libraries
-use httk::network::server::proto_server;
+use httk::holonet::server::proto_server;
 
 //External Libraries
 
