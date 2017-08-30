@@ -2,7 +2,7 @@
 extern crate httk;
 
 //Inside Libraries
-use httk::network::tokio::proto_server;
+use httk::network::server::proto_server;
 
 //External Libraries
 

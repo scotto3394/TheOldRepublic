@@ -2,7 +2,7 @@
 extern crate httk;
 
 //Inside Libraries
-use httk::network::tokio_client::start_connection;
+use httk::network::client::start_connection;
 
 //External Libraries
 
