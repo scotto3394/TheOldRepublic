@@ -17,8 +17,11 @@ extern crate graphics;
 extern crate glutin_window;
 extern crate opengl_graphics;
 
+// Database crates
+extern crate rusqlite;
+
 mod force; // Core module
-mod holocron; // Database module
+pub mod holocron; // Database module
 pub mod holonet; // Network module
 pub mod holoterminal; // Graphics module
 mod jedi_code; // Combat module
