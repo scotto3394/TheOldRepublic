@@ -11,6 +11,7 @@ extern crate tokio_proto;
 extern crate tokio_service;
 
 // Graphics crates
+extern crate conrod;
 extern crate piston_window;
 extern crate piston;
 extern crate graphics;

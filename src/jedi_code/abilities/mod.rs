@@ -1,2 +1,2 @@
-mod force_powers.rs;
-mod tech_powers.rs;
+mod force_powers;
+mod tech_powers;

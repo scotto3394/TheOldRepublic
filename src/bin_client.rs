@@ -6,7 +6,7 @@ extern crate httk;
 
 //Inside Libraries
 // use httk::holonet::client::start_connection;
-use httk::holocron::test_sqlite;
+use httk::holoterminal::spin_rectangle;
 
 //External Libraries
 
@@ -14,5 +14,5 @@ fn main() {
 	// let address = "coruscant.smanifold.com:80";
 	// start_connection(address);
 
-	test_sqlite();
+	spin_rectangle();
 }
