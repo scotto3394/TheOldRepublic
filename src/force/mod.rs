@@ -16,7 +16,7 @@ use std::collections::HashMap;
 //-------------------------------------------------------------------------
 // Enums
 //-------------------------------------------------------------------------
-// To Do: To be expanded
+// To Do: To be expanded, fill in Class enum
 enum Class {
 	Consular(u8), //cleric
 	Guardian(u8), //paladin
@@ -27,7 +27,7 @@ enum Class {
 	Commoner, //Default
 }
 
-// To Do: To be expanded
+// To Do: To be expanded, fill in Species enum
 enum Species {
 	Human,
 	Twilek, 
@@ -35,14 +35,14 @@ enum Species {
 
 }
 
-// To Do: To be expanded
+// To Do: To be expanded, fill in and detail the Effect enum
  enum Effect {
 	Damage(i16),
 	Buff,
 	Debuff,
 }
 
-// To Do: Likely to build in enums to determine bonus types
+// To Do: Think about Enums to specify status effects like Buffs/Debuffs
 
 //-------------------------------------------------------------------------
 // Types
@@ -126,6 +126,8 @@ struct Ability
 	effect: Interactive
 }
 
+//To Do: Figure out how to update HP with class hit dice
+//To Do: Figure out how to dynamically keep interconnected values updated
 struct Entity {
 	hp: u32,
 	level: u8,
@@ -180,6 +182,8 @@ impl Default for Entity {
 	}
 }
 
+// To Do: Think about implementing a `textNode` trait of some sort for easy conversion from structs to Cursive
+
 //-------------------------------------------------------------------------
 // Method Impls
 //-------------------------------------------------------------------------
@@ -188,6 +192,7 @@ impl Default for Entity {
 //=========================================================================
 // Functions
 //=========================================================================
+// To Do: Fill in the `drinks_served` function (aka roll macros)
 pub fn drinks_served(drink: &str) {
 
 }

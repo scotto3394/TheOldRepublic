@@ -1,0 +1,15 @@
+src/force/mod.rs:19:// To Do: To be expanded, fill in Class enum
+src/force/mod.rs:30:// To Do: To be expanded, fill in Species enum
+src/force/mod.rs:38:// To Do: To be expanded, fill in and detail the Effect enum
+src/force/mod.rs:45:// To Do: Think about Enums to specify status effects like Buffs/Debuffs
+src/force/mod.rs:56:// To Do: Perhaps some `temporary` trait to indicate buffs and debuffs ticks.
+src/force/mod.rs:62:// To Do: Need to look into Item Types or Item Enums more closely to resolve easy equipping
+src/force/mod.rs:129://To Do: Figure out how to update HP with class hit dice
+src/force/mod.rs:130://To Do: Figure out how to dynamically keep interconnected values updated
+src/force/mod.rs:185:// To Do: Think about implementing a `textNode` trait of some sort for easy conversion from structs to Cursive
+src/force/mod.rs:195:// To Do: Fill in the `drinks_served` function (aka roll macros)
+src/holonet/client.rs:29:// To Do: Implement more resilient Client Side protocol / structure
+src/holonet/server.rs:108:// To Do: Debug the Handshake Protocol 
+src/holoterminal/mod.rs:13://To Do: Add a ton of documentation to all the `holoterminal` functions
+src/holoterminal/mod.rs:83://To Do: Assign Admin privileges for character deletion
+src/holoterminal/mod.rs:107:// To Do: Look into TrackedView and easy callbacks to return to `Home` page

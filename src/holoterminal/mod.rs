@@ -10,7 +10,7 @@ use cursive::align::HAlign;
 
 use super::force::drinks_served;
 
-//To Do: Add a ton of documentation
+//To Do: Add a ton of documentation to all the `holoterminal` functions
 pub fn startup(tui: &mut Cursive) {
 	// Intro Screen
 	tui.add_fullscreen_layer(Dialog::text("Welcome to the Hall of the Tauntaun King!")
@@ -40,66 +40,47 @@ fn character_select(tui: &mut Cursive) {
 }
 
 fn build_character(tui: &mut Cursive) {
-    fn ok(tui: &mut Cursive, name: &str) {
-        tui.call_on_id("select", |view: &mut SelectView<String>| {
-            view.add_item_str(name);
-        });
-        tui.pop_layer();
-    }
+    // fn ok(tui: &mut Cursive, name: &str) {
+    //     tui.call_on_id("select", |view: &mut SelectView<String>| {
+    //         view.add_item_str(name);
+    //     });
+    //     tui.pop_layer();
+    // }
 
-    tui.add_layer(Dialog::around(EditView::new()
-            .on_submit(ok)
-            .with_id("name")
-            .fixed_width(10))
-        .title("Enter a new name")
-        .button("Ok", |s| {
-            let name = s.call_on_id("name", |v: &mut EditView| {
-                v.get_content()
-            }).unwrap();
-            ok(s, &name);
-        })
-        .button("Cancel", |s| s.pop_layer()));
+    // tui.add_layer(Dialog::around(EditView::new()
+    //         .on_submit(ok)
+    //         .with_id("name")
+    //         .fixed_width(10))
+    //     .title("Enter a new name")
+    //     .button("Ok", |s| {
+    //         let name = extract_edit(s, "name");
+    //         ok(s, &name);
+    //     })
+    //     .button("Cancel", |s| s.pop_layer()));
 
-    // siv.add_layer(Dialog::new()
-    //     .title("Create your loving Alter Ego!")
-    //     .button("Ok", |s| s.quit())
-    //     .content(ListView::new()
-    //         .child("Name", EditView::new().fixed_width(10))
-    //         .child("Receive spam?",
-    //                Checkbox::new()
-    //                    .on_change(|s, checked| for name in &["email1",
-    //                                                          "email2"] {
-    //                        s.call_on_id(name, |view: &mut EditView| {
-    //                            view.set_enabled(checked)
-    //                        });
-    //                        if checked {
-    //                            s.focus_id("email1").unwrap();
-    //                        }
-    //                    }))
-    //         .child("Email",
-    //                LinearLayout::horizontal()
-    //                    .child(EditView::new()
-    //                        .disabled()
-    //                        .with_id("email1")
-    //                        .fixed_width(15))
-    //                    .child(TextView::new("@"))
-    //                    .child(EditView::new()
-    //                        .disabled()
-    //                        .with_id("email2")
-    //                        .fixed_width(10)))
-    //         .delimiter()
-    //         .child("Age",
-    //                SelectView::new()
-    //                    .popup()
-    //                    .item_str("0-18")
-    //                    .item_str("19-30")
-    //                    .item_str("31-40")
-    //                    .item_str("41+"))
-    //         .with(|list| for i in 0..50 {
-    //             list.add_child(&format!("Item {}", i), EditView::new());
-    //         })));
+	fn fill_entity(t: &mut Cursive) {
+
+	}
+
+    tui.add_layer(Dialog::new()
+        .title("Create your loving Alter Ego!")
+        .button("Ok", fill_entity)
+        .content(ListView::new()
+            .child("Name", EditView::new().fixed_width(10))
+            .delimiter()
+            .child("Age",
+                   SelectView::new()
+                       .popup()
+                       .item_str("0-18")
+                       .item_str("19-30")
+                       .item_str("31-40")
+                       .item_str("41+"))
+            .with(|list| for i in 0..50 {
+                list.add_child(&format!("Item {}", i), EditView::new());
+            })));
 }
 
+//To Do: Assign Admin privileges for character deletion
 fn delete_name(s: &mut Cursive) {
     let mut select = s.find_id::<SelectView<String>>("select").unwrap();
     match select.selected_id() {
@@ -116,15 +97,14 @@ fn cantina(tui: &mut Cursive) {
 			.fixed_width(10))
 		.title("What would you like to order?")
 		.button("Ok", |t| {
-			let drink = t.call_on_id("cantina", |view: &mut EditView| {
-					view.get_content()
-			}).unwrap();
+			let drink = extract_edit(t,"cantina");
 			drinks_served(&drink);
 			t.pop_layer();
 		})
 	);
 }
 
+// To Do: Look into TrackedView and easy callbacks to return to `Home` page
 fn stronghold(tui: &mut Cursive, name: &String) {
 	// Load in necessary callbacks
 	tui.add_global_callback('/', cantina);
@@ -136,6 +116,14 @@ fn stronghold(tui: &mut Cursive, name: &String) {
         .title(format!("{}'s info", name))
         .button("Quit", Cursive::quit)
 		.full_screen());
+}
+
+fn extract_edit(tui: &mut Cursive, id: &str) -> String {
+	tui.call_on_id(id, |v: &mut EditView| {
+		v.get_content()
+	})
+		.unwrap()
+		.to_string()
 }
 
 pub fn shutdown(tui: &mut Cursive) {
