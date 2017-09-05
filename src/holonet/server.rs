@@ -105,7 +105,7 @@ impl<T: AsyncRead + AsyncWrite + 'static> ServerProto<T> for LineProto {
 	}
 
 }
-
+// To Do: Debug the Handshake Protocol 
 //===========================================================
 // Service
 //===========================================================

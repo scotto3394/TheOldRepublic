@@ -26,5 +26,5 @@ pub fn start_connection(addr: &str) {
 	}
 }
 
-
+// To Do: Implement more resilient Client Side protocol / structure
 struct ClientProto;

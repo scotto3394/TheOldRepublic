@@ -3,16 +3,23 @@
 
 //extern crates
 extern crate httk;
+extern crate cursive;
 
 //Inside Libraries
 // use httk::holonet::client::start_connection;
-use httk::holoterminal::spin_rectangle;
+use httk::holoterminal::*;
 
 //External Libraries
+use cursive::Cursive;
 
 fn main() {
+	//Start the Client connection
 	// let address = "coruscant.smanifold.com:80";
 	// start_connection(address);
 
-	spin_rectangle();
+	//Start the TUI
+	let mut tui = Cursive::new();
+	tui.add_global_callback('q', shutdown);
+	startup(&mut tui);
+	tui.run();
 }

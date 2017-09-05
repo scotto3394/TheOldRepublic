@@ -3,103 +3,141 @@
 //! This module will control the animations and graphics built into the 
 //! application.
 
+use cursive::Cursive;
+use cursive::traits::*;
+use cursive::views::*;
+use cursive::align::HAlign;
 
+use super::force::drinks_served;
 
-
-
-// use piston_window::WindowSettings;
-// use piston_window::PistonWindow;
-// use piston_window::rectangle;
-// use piston_window::clear;
-
-// pub fn draw_rectangle() {
-//     let mut window: PistonWindow =
-//         WindowSettings::new("Hello Piston!", [640, 480])
-//         .exit_on_esc(true).build().unwrap();
-//     while let Some(event) = window.next() {
-//         window.draw_2d(&event, |context, graphics| {
-//             clear([1.0; 4], graphics);
-//             rectangle([1.0, 0.0, 0.0, 1.0], // red
-//                       [0.0, 0.0, 100.0, 100.0],
-//                       context.transform,
-//                       graphics);
-//         });
-//     }
-// }
-
-//=====================================================================================
-use piston::window::WindowSettings;
-use piston::event_loop::*;
-use piston::input::*;
-use glutin_window::GlutinWindow as Window;
-use opengl_graphics::{ GlGraphics, OpenGL };
-use graphics::*;
-
-pub struct App {
-	gl: GlGraphics,
-	rotation: f64,
+//To Do: Add a ton of documentation
+pub fn startup(tui: &mut Cursive) {
+	// Intro Screen
+	tui.add_fullscreen_layer(Dialog::text("Welcome to the Hall of the Tauntaun King!")
+		.h_align(HAlign::Center)
+		.button("Start Game", character_select)
+		.button("Quit", shutdown)
+		.full_screen());
 }
 
-impl App {
-	fn render(&mut self, args: &RenderArgs) {
+fn character_select(tui: &mut Cursive) {
+	// Character Select & Login
+	let select = SelectView::<String>::new()
+        .on_submit(stronghold)
+        .with_id("select")
+        .fixed_size((10, 5));
+    let buttons = LinearLayout::vertical()
+        .child(Button::new("Add new", build_character))
+        .child(Button::new("Delete", delete_name))
+        .child(DummyView)
+        .child(Button::new("Quit", Cursive::quit));
 
-		const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
-		const RED:	 [f32; 4] = [1.0, 0.0, 0.0, 1.0];
-
-		let square = rectangle::square(0.0, 0.0, (args.width/4) as f64);
-		let rotation = self.rotation;
-		let (x,y) = ((args.width / 2) as f64,
-					(args.height / 2) as f64);
-
-		self.gl.draw(args.viewport(), |c, gl| {
-			// Clear the screen.
-			clear(GREEN, gl);
-
-			let transform = c.transform.trans(x,y)
-									   .rot_rad(rotation)
-									   .trans(-25.0, -25.0);
-									
-			// Draw a box rotating around the middle of the screen.
-			rectangle(RED, square, transform, gl);
-		});
-	}
-
-	fn update(&mut self, args: &UpdateArgs) {
-		// Rotate 2 radians per second.
-		self.rotation += 2.0 * args.dt;
-	}
+    tui.add_layer(Dialog::around(LinearLayout::horizontal()
+            .child(select)
+            .child(DummyView)
+            .child(buttons))
+        	.title("Select your hero"));
 }
 
-pub fn spin_rectangle() {
-	// Choose appropriate GL version
-	let opengl = OpenGL::V3_2;
+fn build_character(tui: &mut Cursive) {
+    fn ok(tui: &mut Cursive, name: &str) {
+        tui.call_on_id("select", |view: &mut SelectView<String>| {
+            view.add_item_str(name);
+        });
+        tui.pop_layer();
+    }
 
-	// Create an Glutin window.
-	let mut window: Window = WindowSettings::new(
-		"spinning-square",
-		[200,200]
-	)
-	.opengl(opengl)
-	.exit_on_esc(true)
-	.build()
-	.unwrap();
+    tui.add_layer(Dialog::around(EditView::new()
+            .on_submit(ok)
+            .with_id("name")
+            .fixed_width(10))
+        .title("Enter a new name")
+        .button("Ok", |s| {
+            let name = s.call_on_id("name", |v: &mut EditView| {
+                v.get_content()
+            }).unwrap();
+            ok(s, &name);
+        })
+        .button("Cancel", |s| s.pop_layer()));
 
-	// Create a new game and run it.
-	let mut app = App {
-		gl: GlGraphics::new(opengl),
-		rotation: 0.0
-	};
-
-	let mut events = Events::new(EventSettings::new());
-	while let Some(e) = events.next(&mut window) {
-		if let Some(r) = e.render_args() {
-			app.render(&r);
-		}
-
-		if let Some(u) = e.update_args() {
-			app.update(&u);
-		}
-	}
+    // siv.add_layer(Dialog::new()
+    //     .title("Create your loving Alter Ego!")
+    //     .button("Ok", |s| s.quit())
+    //     .content(ListView::new()
+    //         .child("Name", EditView::new().fixed_width(10))
+    //         .child("Receive spam?",
+    //                Checkbox::new()
+    //                    .on_change(|s, checked| for name in &["email1",
+    //                                                          "email2"] {
+    //                        s.call_on_id(name, |view: &mut EditView| {
+    //                            view.set_enabled(checked)
+    //                        });
+    //                        if checked {
+    //                            s.focus_id("email1").unwrap();
+    //                        }
+    //                    }))
+    //         .child("Email",
+    //                LinearLayout::horizontal()
+    //                    .child(EditView::new()
+    //                        .disabled()
+    //                        .with_id("email1")
+    //                        .fixed_width(15))
+    //                    .child(TextView::new("@"))
+    //                    .child(EditView::new()
+    //                        .disabled()
+    //                        .with_id("email2")
+    //                        .fixed_width(10)))
+    //         .delimiter()
+    //         .child("Age",
+    //                SelectView::new()
+    //                    .popup()
+    //                    .item_str("0-18")
+    //                    .item_str("19-30")
+    //                    .item_str("31-40")
+    //                    .item_str("41+"))
+    //         .with(|list| for i in 0..50 {
+    //             list.add_child(&format!("Item {}", i), EditView::new());
+    //         })));
 }
 
-//=====================================================================================
+fn delete_name(s: &mut Cursive) {
+    let mut select = s.find_id::<SelectView<String>>("select").unwrap();
+    match select.selected_id() {
+        None => s.add_layer(Dialog::info("No name to remove")),
+        Some(focus) => {
+            select.remove_item(focus);
+        }
+    }
+}
+
+fn cantina(tui: &mut Cursive) {
+	tui.add_layer(Dialog::around(EditView::new()
+			.with_id("cantina")
+			.fixed_width(10))
+		.title("What would you like to order?")
+		.button("Ok", |t| {
+			let drink = t.call_on_id("cantina", |view: &mut EditView| {
+					view.get_content()
+			}).unwrap();
+			drinks_served(&drink);
+			t.pop_layer();
+		})
+	);
+}
+
+fn stronghold(tui: &mut Cursive, name: &String) {
+	// Load in necessary callbacks
+	tui.add_global_callback('/', cantina);
+
+	// Home Screen
+    tui.clear();
+    tui.add_fullscreen_layer(Dialog::text(
+			format!("Name: {}\nAwesome: yes", name))
+        .title(format!("{}'s info", name))
+        .button("Quit", Cursive::quit)
+		.full_screen());
+}
+
+pub fn shutdown(tui: &mut Cursive) {
+	tui.quit();
+}
