@@ -54,30 +54,47 @@ type Interactive = Box<FnMut(Entity, Option<Vec<Entity>>) -> Option<Effect>>;
 //-------------------------------------------------------------------------
 
 // To Do: Perhaps some `temporary` trait to indicate buffs and debuffs ticks.
-
+trait Item {
+    fn appraise(&self) -> u16;
+}
+trait Equipment {
+    fn equip(&self, person: Entity);
+}
 
 //-------------------------------------------------------------------------
 // Structs
 //-------------------------------------------------------------------------
 // To Do: Need to look into Item Types or Item Enums more closely to resolve easy equipping
 // as well as quick item action resolving
-struct Item {
-	name: String,
-	description: String,
-	value: u32,
-	effect: Option<Interactive>,
+
+struct Armor;
+
+enum Weapon {
+    Lightsaber,
+    Blaster,
+    Stick,
 }
 
+struct Acessory;
+
+enum Tool {
+    Grenade,
+    Holocron,
+    Stim,
+    Adrenal,
+}
+
+struct Loot;
+
 struct Outfit {
-	head: Option<Item>,
-	shoulders: Option<Item>,
-	body: Option<Item>,
-	hand: Option<Item>,
-	shoes: Option<Item>,
-	enhance1: Option<Item>,
-	enhance2: Option<Item>,
-	weapon1: Option<Item>,
-	weapon2: Option<Item>,
+	head: Option<Armor>,
+	shoulders: Option<Armor>,
+	body: Option<Armor>,
+	hand: Option<Armor>,
+	shoes: Option<Armor>,
+	enhance: Vec<Option<Acessory>>,
+	main_hand: Option<Weapon>,
+	off_hand: Option<Weapon>,
 }
 
 
@@ -138,7 +155,7 @@ struct Entity {
 	traits: HashMap<String, Trait>,
 	abilities: HashMap<String, Ability>,
 	statuses: Option<Vec<Effect>>,
-	inventory: Vec<Item>,
+	inventory: Vec<Box<Item>>,
 	equipped: Outfit,
 }
 
@@ -168,8 +185,8 @@ impl Default for DefenseBlock {
 impl Default for Outfit {
 	fn default() -> Outfit {
 		Outfit { head: None, shoulders: None, body: None,
-			hand: None, shoes: None, enhance1: None, enhance2: None,
-			weapon1: None, weapon2: None,
+			hand: None, shoes: None, enhance: vec![None],
+			main_hand: None, off_hand: None,
 }
 	}
 }
