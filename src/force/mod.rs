@@ -36,24 +36,36 @@ enum Species {
 }
 
 // To Do: To be expanded, fill in and detail the Effect enum
- enum Effect {
-	Damage(i16),
+// To Do: Think about how saves are incorporated into partial effects
+pub enum Effect {
+	Damage(Dice),
 	Buff,
 	Debuff,
 }
 
 // To Do: Think about Enums to specify status effects like Buffs/Debuffs
+enum Saves {Fort(u8), Will(u8), Reflex(u8)}
+enum Slot{Head, Shoulder, Body, Hand, Shoes, Enhancement, MH, OH}
+enum Rtype{Melee, Ranged}
+enum Dtype{Energy, Ion, Concussive, Physical}
 
+enum Interact {
+    Personal(Box<FnMut(&Entity) -> Option<Effect>>),
+    Group(Box<FnMut(&Entity, Vec<&Entity>) -> Option<Effect>>),
+    Area(Box<FnMut(&Entity, Option<Vec<&Entity>>) -> Option<Effect>>),
+    Target(Box<FnMut(&Entity, &Entity) -> Option<Effect>>),
+}
 //-------------------------------------------------------------------------
 // Types
 //-------------------------------------------------------------------------
-type Interactive = Box<FnMut(Entity, Option<Vec<Entity>>) -> Option<Effect>>;
+//type Interactive = Box<FnMut(&Entity, Option<Vec<&Entity>>) -> Option<Effect>>;
 
 //-------------------------------------------------------------------------
 // Traits
 //-------------------------------------------------------------------------
 
 // To Do: Perhaps some `temporary` trait to indicate buffs and debuffs ticks.
+// To Do: Fill out these traits to be more appropriate and constructive
 trait Item {
     fn appraise(&self) -> u16;
 }
@@ -64,18 +76,32 @@ trait Equipment {
 //-------------------------------------------------------------------------
 // Structs
 //-------------------------------------------------------------------------
-// To Do: Need to look into Item Types or Item Enums more closely to resolve easy equipping
-// as well as quick item action resolving
+// To Do: Flesh out the item types and enums with appropriate structs.
 
-struct Armor;
+pub struct Dice { num_dice: u8, dice_size: u8}
 
-enum Weapon {
-    Lightsaber,
-    Blaster,
-    Stick,
+struct Armor {
+    name: String,
+    value: u32,
+    slot: Slot,
+    armor: Option<u8>,
+    effect: Option<Interact>,
 }
 
-struct Acessory;
+struct Weapon {
+    name: String,
+    value: u32,
+    slot: Slot,
+    damage: Dice,
+    threat_range: u8,
+    threat_mult: u8,
+    range_type: Rtype,
+    damage_type: Dtype,
+}
+
+struct Accessory {
+	name: String,
+}
 
 enum Tool {
     Grenade,
@@ -92,7 +118,7 @@ struct Outfit {
 	body: Option<Armor>,
 	hand: Option<Armor>,
 	shoes: Option<Armor>,
-	enhance: Vec<Option<Acessory>>,
+	enhance: Vec<Option<Accessory>>,
 	main_hand: Option<Weapon>,
 	off_hand: Option<Weapon>,
 }
@@ -133,19 +159,19 @@ struct Trait
 {
 	name: String,
 	description: String,
-	effect: Interactive
+	effect: Interact
 }
 
 struct Ability
 {
 	name: String,
 	description: String,
-	effect: Interactive
+	effect: Interact
 }
 
 //To Do: Figure out how to update HP with class hit dice
 //To Do: Figure out how to dynamically keep interconnected values updated
-struct Entity {
+pub struct Entity {
 	hp: u32,
 	level: u8,
 	class: Vec<Class>,
