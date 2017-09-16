@@ -32,7 +32,7 @@ enum Species {
 	Human,
 	Twilek, 
 	Zaabrak,
-
+	Chiss,
 }
 
 // To Do: To be expanded, fill in and detail the Effect enum
@@ -97,10 +97,13 @@ struct Weapon {
     threat_mult: u8,
     range_type: Rtype,
     damage_type: Dtype,
+	effect: Option<Interact>,
 }
 
 struct Accessory {
 	name: String,
+	value: u32,
+	effect: Option<Interact>,
 }
 
 enum Tool {
@@ -238,4 +241,28 @@ impl Default for Entity {
 // To Do: Fill in the `drinks_served` function (aka roll macros)
 pub fn drinks_served(drink: &str) {
 
+}
+
+
+
+//#[cfg(test)]
+mod test {
+	use super::*;
+
+	#[test]
+	fn test_entity() {
+		let emixan_stats: StatBlock = Default::default();
+		let emixan = Entity{
+			hp: 0, level: 1, 
+			class: vec![Class::Operative(1)],
+			species: Species::Chiss,
+			skills: HashMap::new(),
+			stats: emixan_stats,
+			traits: HashMap::new(),
+			abilities: HashMap::new(),
+			statuses: None,
+			inventory: Vec::new(),
+			equipped: Default::default(),
+		};
+	}
 }
