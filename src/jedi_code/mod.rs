@@ -3,4 +3,4 @@
 //! This module will operate the necessary functionality to run combat
 //! encounters for the player.
 
-mod abilities; //spell lists
+pub mod abilities; //spell lists

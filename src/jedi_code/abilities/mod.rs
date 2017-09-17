@@ -3,6 +3,7 @@ mod tech_powers;
 
 use force::{Entity, Effect};
 
-fn saber_throw(user: &Entity, target: &Entity) -> Option<Effect> {
+//To Do: Comment abilities and indicate Interact variant type.
+pub fn saber_throw(user: &Entity, target: &Entity) -> Option<Vec<Effect>> {
     None
 }

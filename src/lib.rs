@@ -15,7 +15,14 @@ extern crate cursive;
 
 // Database crates
 extern crate rusqlite;
+extern crate serde;
+#[macro_use]
+extern crate serde_json;
+#[macro_use]
+extern crate serde_derive;
 
+
+//To Do: Clean up the `pub` keywords everywhere.
 pub mod force; // Core module
 pub mod holocron; // Database module
 pub mod holonet; // Network module

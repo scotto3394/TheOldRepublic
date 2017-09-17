@@ -17,6 +17,7 @@ use std::collections::HashMap;
 // Enums
 //-------------------------------------------------------------------------
 // To Do: To be expanded, fill in Class enum
+#[derive(Serialize, Deserialize, Debug)]
 enum Class {
 	Consular(u8), //cleric
 	Guardian(u8), //paladin
@@ -28,6 +29,7 @@ enum Class {
 }
 
 // To Do: To be expanded, fill in Species enum
+#[derive(Serialize, Deserialize, Debug)]
 enum Species {
 	Human,
 	Twilek, 
@@ -37,6 +39,7 @@ enum Species {
 
 // To Do: To be expanded, fill in and detail the Effect enum
 // To Do: Think about how saves are incorporated into partial effects
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Effect {
 	Damage(Dice),
 	Buff,
@@ -44,16 +47,20 @@ pub enum Effect {
 }
 
 // To Do: Think about Enums to specify status effects like Buffs/Debuffs
+#[derive(Serialize, Deserialize, Debug)]
 enum Saves {Fort(u8), Will(u8), Reflex(u8)}
+#[derive(Serialize, Deserialize, Debug)]
 enum Slot{Head, Shoulder, Body, Hand, Shoes, Enhancement, MH, OH}
+#[derive(Serialize, Deserialize, Debug)]
 enum Rtype{Melee, Ranged}
+#[derive(Serialize, Deserialize, Debug)]
 enum Dtype{Energy, Ion, Concussive, Physical}
-
+//To Do: Implement Debuf/Serialization for Interact enum.
 enum Interact {
-    Personal(Box<FnMut(&Entity) -> Option<Effect>>),
-    Group(Box<FnMut(&Entity, Vec<&Entity>) -> Option<Effect>>),
-    Area(Box<FnMut(&Entity, Option<Vec<&Entity>>) -> Option<Effect>>),
-    Target(Box<FnMut(&Entity, &Entity) -> Option<Effect>>),
+    Personal(Box<FnMut(&Entity) -> Option<Vec<Effect>>>),
+    Group(Box<FnMut(&Entity, Vec<&Entity>) -> Option<Vec<Effect>>>),
+    Area(Box<FnMut(&Entity, Option<Vec<&Entity>>) -> Option<Vec<Effect>>>),
+    Target(Box<FnMut(&Entity, &Entity) -> Option<Vec<Effect>>>),
 }
 //-------------------------------------------------------------------------
 // Types
@@ -66,9 +73,11 @@ enum Interact {
 
 // To Do: Perhaps some `temporary` trait to indicate buffs and debuffs ticks.
 // To Do: Fill out these traits to be more appropriate and constructive
+// To Do: Implement Debug/Serialization effects for traits.
 trait Item {
     fn appraise(&self) -> u16;
 }
+
 trait Equipment {
     fn equip(&self, person: Entity);
 }
@@ -77,9 +86,10 @@ trait Equipment {
 // Structs
 //-------------------------------------------------------------------------
 // To Do: Flesh out the item types and enums with appropriate structs.
-
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Dice { num_dice: u8, dice_size: u8}
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Armor {
     name: String,
     value: u32,
@@ -88,6 +98,7 @@ struct Armor {
     effect: Option<Interact>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Weapon {
     name: String,
     value: u32,
@@ -100,12 +111,14 @@ struct Weapon {
 	effect: Option<Interact>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Accessory {
 	name: String,
 	value: u32,
 	effect: Option<Interact>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 enum Tool {
     Grenade,
     Holocron,
@@ -113,8 +126,10 @@ enum Tool {
     Adrenal,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Loot;
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Outfit {
 	head: Option<Armor>,
 	shoulders: Option<Armor>,
@@ -126,7 +141,7 @@ struct Outfit {
 	off_hand: Option<Weapon>,
 }
 
-
+#[derive(Serialize, Deserialize, Debug)]
 struct CoreBlock {
 	strength: u8,
 	dexterity: u8,
@@ -136,6 +151,7 @@ struct CoreBlock {
 	charisma: u8,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct DefenseBlock {
 	armor: u8,
 	cmd: u8,
@@ -144,20 +160,21 @@ struct DefenseBlock {
 	will_save: u8,
 }
 
-#[derive(Default)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 struct AttackBlock {
 	bab: u8,
 	melee: u8,
 	ranged: u8,
 }
 
-#[derive(Default)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 struct StatBlock {
 	core: CoreBlock,
 	attack: AttackBlock,
 	defense: DefenseBlock,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Trait
 {
 	name: String,
@@ -165,6 +182,7 @@ struct Trait
 	effect: Interact
 }
 
+#[derive(Serialize, Deserialize, Debug)]
 struct Ability
 {
 	name: String,
@@ -174,6 +192,7 @@ struct Ability
 
 //To Do: Figure out how to update HP with class hit dice
 //To Do: Figure out how to dynamically keep interconnected values updated
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Entity {
 	hp: u32,
 	level: u8,
@@ -207,7 +226,8 @@ impl Default for CoreBlock {
 
 impl Default for DefenseBlock {
 	fn default() -> DefenseBlock{
-		DefenseBlock { armor: 10, cmd: 10, ..Default::default()}
+		DefenseBlock { armor: 10, cmd: 10, fort_save: 0, 
+            ref_save: 0, will_save: 0}
 	}
 }
 
@@ -221,8 +241,9 @@ impl Default for Outfit {
 }
 impl Default for Entity {
 	fn default() -> Entity{
+        let stat_block: StatBlock = Default::default();
 		Entity{ hp: 0, level: 0, class: vec![Class::Commoner], species: Species::Human,
-			skills: HashMap::new(), stats: Default::default(), traits: HashMap::new(),
+			skills: HashMap::new(), stats: stat_block, traits: HashMap::new(),
 			abilities: HashMap::new(), statuses: None, inventory: Vec::new(), 
 			equipped: Default::default()}
 	}
@@ -245,24 +266,52 @@ pub fn drinks_served(drink: &str) {
 
 
 
-//#[cfg(test)]
+#[cfg(test)]
 mod test {
 	use super::*;
 
-	#[test]
-	fn test_entity() {
-		let emixan_stats: StatBlock = Default::default();
-		let emixan = Entity{
-			hp: 0, level: 1, 
-			class: vec![Class::Operative(1)],
-			species: Species::Chiss,
-			skills: HashMap::new(),
-			stats: emixan_stats,
-			traits: HashMap::new(),
-			abilities: HashMap::new(),
-			statuses: None,
-			inventory: Vec::new(),
-			equipped: Default::default(),
-		};
-	}
+    #[test]
+    fn test_smallentity() {
+        let emixan: Entity = Default::default();
+    }
+   
+    #[test]
+    fn test_entity() {
+        let emixan = Entity {
+            hp: 0, level: 1,
+            class: vec![Class::Operative(1)],
+            species: Species::Chiss,
+            skills: HashMap::new(),
+            stats: StatBlock::default(),
+            traits: HashMap::new(),
+            abilities: HashMap::new(),
+            statuses: None,
+            inventory: Vec::<Box<Item>>::new(),
+            equipped: Outfit::default(),
+        };
+    }
+
+    #[test]
+    fn test_datasave() {
+        let emixan: Entity = Default::default();
+        let serial = serde_json::to_string(&emixan).unwrap();
+        println!("serialized = {}", serial);
+
+        let deserial: Entity = serde_json::from_str(&serial).unwrap();
+        println!("deserialized = {:?}", deserial);
+    }
+
+    #[test]
+    fn test_spellbook() {
+        use super::super::jedi_code::abilities::saber_throw;
+        let saber_throw_ability = Ability {
+            name: String::from("Saber Throw"),
+            description: String::from("Throw a saber"),
+            effect: Interact::Target(Box::new(saber_throw)),
+        };
+        let mut spellbook = HashMap::new();
+        spellbook.insert(String::from("Saber Throw"), saber_throw_ability);
+    }
+
+
 }
