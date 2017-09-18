@@ -25,7 +25,7 @@ enum Class {
 	Smuggler(u8), //rogue
 	Operative(u8), //slayer
 	BountyHunter(u8), //ranger
-	Commoner, //Default
+	Commoner, 
 }
 
 // To Do: To be expanded, fill in Species enum
