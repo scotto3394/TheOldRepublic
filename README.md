@@ -16,7 +16,7 @@ The basic goals come down to the following:
 Code layout
 ===============================
 
-Information about the code layout can be found in the Docs. Link forthcoming.
+Information about the code layout can be found in the [Docs](coruscant.smanifold.com)
 
 
 Current Layout and Progress
