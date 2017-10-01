@@ -13,13 +13,13 @@ use httk::holoterminal::*;
 use cursive::Cursive;
 
 fn main() {
-	//Start the Client connection
-	// let address = "coruscant.smanifold.com:80";
-	// start_connection(address);
+    //Start the Client connection
+    // let address = "coruscant.smanifold.com:80";
+    // start_connection(address);
 
-	//Start the TUI
-	let mut tui = Cursive::new();
-	tui.add_global_callback('q', shutdown);
-	startup(&mut tui);
-	tui.run();
+    //Start the TUI
+    let mut tui = Cursive::new();
+    tui.add_global_callback('q', shutdown);
+    startup(&mut tui);
+    tui.run();
 }

@@ -1,7 +1,7 @@
 //! This is the root of the "Hall of the Tauntaun King" library or more
 //! succintly known as `httk`. This library will hold all the essential
 //! functions, structures, and components to run the client and server
-//! applications for the future game. 
+//! applications for the future game.
 
 // Networking crates
 extern crate bytes;
@@ -15,12 +15,6 @@ extern crate cursive;
 
 // Database crates
 extern crate rusqlite;
-extern crate serde;
-#[macro_use]
-extern crate serde_json;
-#[macro_use]
-extern crate serde_derive;
-
 
 //To Do: Clean up the `pub` keywords everywhere.
 pub mod force; // Core module
